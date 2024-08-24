@@ -1,4 +1,3 @@
-import { dev } from '$app/environment';
 import { PRIVATE_FIREBASE_ADMIN_CONFIG } from '$env/static/private';
 import { adminAuth } from '$lib/firebase-admin';
 import { PredictionServiceClient, helpers } from '@google-cloud/aiplatform';
@@ -9,7 +8,7 @@ const model = 'text-embedding-004';
 const task = 'SEMANTIC_SIMILARITY';
 const location = 'us-central1';
 const apiEndpoint = 'us-central1-aiplatform.googleapis.com';
-//const dimensionality = 0;
+const dimensionality = 768;
 
 const firebase_admin_config = JSON.parse(PRIVATE_FIREBASE_ADMIN_CONFIG);
 
@@ -17,7 +16,6 @@ const firebase_admin_config = JSON.parse(PRIVATE_FIREBASE_ADMIN_CONFIG);
 export const getEmbedding = async (content: string) => {
 
     const project = adminAuth.app.options.projectId;
-
 
     /*
 const token = await adminAuth.app.options.credential!.getAccessToken();
@@ -39,7 +37,7 @@ const token = await adminAuth.app.options.credential!.getAccessToken();
                 },
             ],
             parameters: {
-                outputDimensionality: 256
+                outputDimensionality: dimensionality
             }
         })
     });
@@ -70,7 +68,7 @@ const token = await adminAuth.app.options.credential!.getAccessToken();
             helpers.toValue({ content, task }) as google.protobuf.IValue
         ],
         parameters: helpers.toValue({
-            outputDimensionality: 768
+            outputDimensionality: dimensionality
         })
     });
 
@@ -85,10 +83,6 @@ const token = await adminAuth.app.options.credential!.getAccessToken();
         const valuesProto = embeddingsProto.structValue!.fields!.values;
         return valuesProto.listValue!.values!.map(v => v.numberValue);
     });
-
-    if (dev) {
-        //console.log(embeddings[0]);
-    }
 
     return embeddings[0] as number[];
 };
