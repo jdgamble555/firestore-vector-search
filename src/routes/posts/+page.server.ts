@@ -30,6 +30,10 @@ export const actions = {
 
     addPost: async ({ request }) => {
 
+        // disabling to prevent spam
+        // comment out htis line to work correctly
+        return;
+
         const { text } = Object.fromEntries(
             await request.formData()
         );

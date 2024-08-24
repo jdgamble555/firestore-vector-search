@@ -12,12 +12,14 @@
 			class="block w-72 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
 			required
 			placeholder="Write something..."
+			disabled
 		/>
-		<button type="submit" class="w-fit rounded-lg border bg-blue-600 p-3 font-semibold text-white">
+		<button type="submit" class="w-fit rounded-lg border bg-blue-600 p-3 font-semibold text-white" disabled>
 			Save
 		</button>
 	</div>
 </form>
+<p class="text-center m-5 text-red-800 italic">I have disabled adding new data for the demo to prevent spam.</p>
 <div class="mt-5 flex flex-col items-center justify-center gap-5">
 	<div class="max-w-5xl">
 		{#each data?.docs || [] as doc}
