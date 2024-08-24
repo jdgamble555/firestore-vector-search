@@ -10,6 +10,7 @@ export const load = (async () => {
 
     const data = await adminDB.collection('posts').get();
 
+    // don't return actual vector, won't serialize
     const docs = data.docs.map((doc) => {
         const data = doc.data();
         return {
@@ -39,9 +40,13 @@ export const actions = {
 
         const embeddings = await getEmbedding(text);
 
+        // expire date for 10 minutes with TTL
+        const expiredAt = new Date(new Date().getTime() + 10 * 60000);
+
         await adminDB.collection('posts').add({
             text,
-            search: FieldValue.vector(embeddings)
+            search: FieldValue.vector(embeddings),
+            expiredAt
         });
     }
 

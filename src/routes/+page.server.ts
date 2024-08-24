@@ -28,6 +28,7 @@ export const actions = {
             })
             .get();
 
+        // don't return actual vector, won't serialize
         const docs = data.docs.map((doc) => {
             const data = doc.data();
             return {
