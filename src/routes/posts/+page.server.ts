@@ -4,6 +4,7 @@ import type { PageServerLoad } from './$types';
 import { adminDB } from '$lib/firebase-admin';
 import { getEmbedding } from './embedding';
 import { FieldValue } from 'firebase-admin/firestore';
+import { dev } from '$app/environment';
 
 
 export const load = (async () => {
@@ -30,9 +31,11 @@ export const actions = {
 
     addPost: async ({ request }) => {
 
-        // disabling to prevent spam
-        // comment out htis line to work correctly
-        return;
+        // disabling in production to prevent spam
+        // comment out this line to work correctly
+        if (!dev) {
+            return;
+        }
 
         const { text } = Object.fromEntries(
             await request.formData()
